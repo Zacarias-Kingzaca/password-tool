@@ -1,62 +1,68 @@
+from rich import print
 import random
 import string
 
-def verificar_forca(senha):
-    pontos = 0
+"""
+Password Strength Checker & Generator
+Author: Zacarias Eduardo Joao
+Description: Checks password strength and generates secure passwords
+"""
+
+def check_strength(password):
+    score = 0
     feedback = []
 
-    if len(senha) >= 8:
-        pontos += 1
+    if len(password) >= 8:
+        score += 1
     else:
-        feedback.append("- Use pelo menos 8 caracteres")
+        feedback.append("- Use at least 8 characters")
 
-    if any(c.isupper() for c in senha):
-        pontos += 1
+    if any(c.isupper() for c in password):
+        score += 1
     else:
-        feedback.append("- Adicione letras MAIÚSCULAS")
+        feedback.append("- Add UPPERCASE letters")
 
-    if any(c.islower() for c in senha):
-        pontos += 1
+    if any(c.islower() for c in password):
+        score += 1
     else:
-        feedback.append("- Adicione letras minúsculas")
+        feedback.append("- Add lowercase letters")
 
-    if any(c.isdigit() for c in senha):
-        pontos += 1
+    if any(c.isdigit() for c in password):
+        score += 1
     else:
-        feedback.append("- Adicione NÚMEROS")
+        feedback.append("- Add NUMBERS")
 
-    if any(c in string.punctuation for c in senha):
-        pontos += 1
+    if any(c in string.punctuation for c in password):
+        score += 1
     else:
-        feedback.append("- Adicione SÍMBOLOS (!@#$%)")
+        feedback.append("- Add SYMBOLS (!@#$%)")
 
-    if pontos <= 2:
-        forca = "FRACA ❌"
-    elif pontos <= 4:
-        forca = "MÉDIA ⚠️"
+    if score <= 2:
+        strength = "[red] WEAK [/] ❌"
+    elif score <= 4:
+        strength = "[yellow] MEDIUM [/] ⚠️"
     else:
-        forca = "FORTE ✅"
+        strength = "[green] STRONG [/] ✅"
 
-    return forca, feedback
+    return strength, feedback
 
-def gerar_senha_forte(tamanho=12):
-    caracteres = string.ascii_letters + string.digits + string.punctuation
-    senha = ''.join(random.choice(caracteres) for _ in range(tamanho))
-    return senha
+def generate_strong_password(length=12):
+    chars = string.ascii_letters + string.digits + string.punctuation
+    return ''.join(random.choice(chars) for _ in range(length))
 
-# --- PROGRAMA PRINCIPAL ---
+# --- Main Program ---
 print("=== PASSWORD SECURITY TOOL ===")
-senha_user = input("Digite uma senha para verificar: ")
+user_pass = input("Enter a password to check: ")
 
-forca, dicas = verificar_forca(senha_user)
-print(f"\nForça da senha: {forca}")
+strength, tips = check_strength(user_pass)
+print(f"\nPassword strength: {strength}")
 
-if dicas:
-    print("Como melhorar:")
-    for dica in dicas:
-        print(dica)
+if tips:
+    print("How to improve:")
+    for tip in tips:
+        print(tip)
 
-print("\n--- Gerador de senha forte ---")
-print(f"Sugestão de senha segura: {gerar_senha_forte(12)}")
-print(f"Sugestão extra forte: {gerar_senha_forte(16)}")
+print("\n--- Strong Password Generator ---")
+print(f"[blue] Secure suggestion (12 chars):[/] {generate_strong_password(12)}")
+print(f"[blue] Extra strong suggestion (16 chars):[/] {generate_strong_password(16)}")
 
